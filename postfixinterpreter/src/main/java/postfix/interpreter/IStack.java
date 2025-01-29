@@ -1,3 +1,4 @@
+package postfix.interpreter;
 /**
  * Interfaz realizada en conjunto con todos los grupos para el Stack.
  */

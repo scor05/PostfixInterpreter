@@ -1,3 +1,4 @@
+package postfix.interpreter;
 /*
  * Clase principal del Stack realizada con nodos, esta es la que se impmenenta en la clase main.
  */
@@ -28,4 +29,11 @@ public class NodeStack<T> implements IStack {
         this.last = last;
     }
 
+    public void push(T value) {
+        Node<T> newNode = new Node<T>(value);
+        Node<T> aux = null;
+        aux = this.last;
+        this.setLast(newNode);
+        newNode.setPrevious(aux);
+    }
 }

@@ -1,3 +1,5 @@
+package postfix.interpreter;
+
 /**
  * Clase principal que ejecutará el código del interprete.
  */
@@ -5,9 +7,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 public class Driver {
     public static void main(String[] args) {
         ArrayList<String[]> tokens = new ArrayList<>();
+        NodeStack<String> stack = new NodeStack<>();
         try {
             tokens = readFile("datos.txt");
         } catch (IOException IOE) {
@@ -23,7 +27,7 @@ public class Driver {
     public static ArrayList<String[]> readFile(String fileName) throws IOException {
         BufferedReader br = new BufferedReader(new java.io.FileReader(fileName));
         String line;
-        ArrayList<String[]> tokens = new ArrayList<>();
+        ArrayList<String[]> tokens = new ArrayList<>(); // Es una matriz de String[] con todas las líneas del archivo.
         while((line = br.readLine()) != null) {
             String[] lines = line.split(" ");
             tokens.add(lines);

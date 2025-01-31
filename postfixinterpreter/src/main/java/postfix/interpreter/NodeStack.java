@@ -4,6 +4,31 @@ public class NodeStack<T> implements IStack<T> {
     private Node<T> last;
     private int size; // Contador de elementos en la pila
 
+
+    public Node<T> getFirst() {
+        return this.first;
+    }
+
+    public void setFirst(Node<T> first) {
+        this.first = first;
+    }
+
+    public Node<T> getLast() {
+        return this.last;
+    }
+
+    public void setLast(Node<T> last) {
+        this.last = last;
+    }
+
+    public int getSize() {
+        return this.size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
     /**
      * Constructor de la pila.
      */

@@ -35,3 +35,23 @@ class CalculadoraTest {
         });
         assertTrue(exception.getMessage().contains("Error: Caracter no válido detectado"));
     }
+
+    @Test
+    void testDivisionPorCero() {
+        Calculadora calculadora = new Calculadora();
+        String[] input = {"10", "0", "/"}; // División entre 0
+        Exception exception = assertThrows(ArithmeticException.class, () -> {
+            calculadora.interpret(input);
+        });
+        assertEquals("Error: División o módulo entre cero.", exception.getMessage());
+    }
+
+    @Test
+    void testModuloEntreCero() {
+        Calculadora calculadora = new Calculadora();
+        String[] input = {"10", "0", "%"}; // Módulo entre 0
+        Exception exception = assertThrows(ArithmeticException.class, () -> {
+            calculadora.interpret(input);
+        });
+        assertEquals("Error: División o módulo entre cero.", exception.getMessage());
+    }

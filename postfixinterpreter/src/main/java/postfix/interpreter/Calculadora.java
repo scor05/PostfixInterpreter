@@ -14,17 +14,33 @@ public class Calculadora {
     public int interpret(String[] token) {
         for (int i = 0; i < token.length; i++){
             token[i] = token[i].trim(); // Quitar espacios innecesarios.
-            if (!token[i].equals("+") && !token[i].equals("-") && !token[i].equals("*") && !token[i].equals("/") && !token[i].equals("%")) {
+
+            if (token[i].matches("-?\\d+")) { // Verifica si es un número válido
                 this.stack.push(token[i]);
-            } else {
-                String operator = token[i];
+            } else if (token[i].matches("[+\\-*/%]")) { // Es un operador
+                if (this.stack.size() < 2) { // No hay suficientes operandos
+                    throw new IllegalArgumentException("Error: Operador '" + token[i] + "' sin suficientes operandos.");
+                }
+                
                 String B = this.stack.pop();
                 String A = this.stack.pop();
-                String result = this.stack.operation(operator.charAt(0), A, B);
+                
+                if ((token[i].equals("/") || token[i].equals("%")) && B.equals("0")) {
+                    throw new ArithmeticException("Error: División o módulo entre cero.");
+                }
+
+                String result = this.stack.operation(token[i].charAt(0), A, B);
                 this.stack.push(String.valueOf(result));
+
+            } else { // Caso donde haya una letra o símbolo inválido
+                throw new IllegalArgumentException("Error: Caracter no válido detectado -> '" + token[i] + "'");
             }
         }
-        // TODO: Implementar programación defensiva: casos de división entre cero, módulos entre cero, operaciones inválidas, etc.
+
+        if (this.stack.size() != 1) { // Si la pila no tiene exactamente un resultado final
+            throw new IllegalStateException("Error: Expresión mal formada, quedan elementos en la pila.");
+        }
+
         return Integer.parseInt(this.stack.pop());
     }
 

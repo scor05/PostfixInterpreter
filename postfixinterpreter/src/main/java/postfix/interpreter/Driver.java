@@ -1,38 +1,28 @@
 package postfix.interpreter;
-
-/**
- * Clase principal que ejecutará el código del interprete.
- */
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 public class Driver {
     public static void main(String[] args) {
+        Calculadora calcu = new Calculadora();
         ArrayList<String[]> tokens = new ArrayList<>();
-        NodeStack<String> stack = new NodeStack<>();
-        try {
-            tokens = readFile("datos.txt");
-        } catch (IOException IOE) {
-            System.out.println("Error al leer el archivo: " + IOE.getMessage());
+        try{
+            tokens = calcu.readFile("datos.txt");
+        }catch(IOException e){
+            System.out.println("Error al leer el archivo: " + e.getMessage());
             return;
         }
-        if(tokens.size() == 0) {
-            System.out.println("El archivo está vacío.");
-            return;
-        }
-    }
 
-    public static ArrayList<String[]> readFile(String fileName) throws IOException {
-        BufferedReader br = new BufferedReader(new java.io.FileReader(fileName));
-        String line;
-        ArrayList<String[]> tokens = new ArrayList<>(); // Es una matriz de String[] con todas las líneas del archivo.
-        while((line = br.readLine()) != null) {
-            String[] lines = line.split(" ");
-            tokens.add(lines);
+        if (tokens.size() == 0) {
+            System.out.println("No hay ninguna operación en el archivo.");
+            return;
         }
-        br.close();
-        return tokens;
+
+        int[] resultados = new int[tokens.size()];
+        for (int i = 0; i < tokens.size(); i++) {
+            resultados[i] = calcu.interpret(tokens.get(i));
+            System.out.println("El resultado de la operación en la línea #" + (i + 1) + " es: " + resultados[i]);
+        }
+        
     }
 }

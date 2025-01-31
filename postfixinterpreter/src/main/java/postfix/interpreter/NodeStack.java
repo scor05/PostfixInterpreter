@@ -1,8 +1,4 @@
 package postfix.interpreter;
-/*
- * Clase principal del Stack realizada con nodos, esta es la que se impmenenta en la clase main.
- */
-
 public class NodeStack<T> implements IStack<T> {
     private Node<T> first;
     private Node<T> last;
@@ -30,16 +26,32 @@ public class NodeStack<T> implements IStack<T> {
 
     public void push(T value) {
         Node<T> newNode = new Node<T>(value);
-        Node<T> aux = null;
-        aux = this.last;
-        this.setLast(newNode);
-        newNode.setPrevious(aux);
+
+        if (this.last == null) {
+            this.setFirst(newNode);
+            this.setLast(newNode);
+        } else {
+            Node<T> aux = this.getLast();
+            aux.setNext(newNode);
+            newNode.setPrevious(aux);
+            this.setLast(newNode);
+        }
     }
 
     public T pop() {
+        if (this.last == null) { 
+            throw new RuntimeException("La pila ya está vacía."); 
+        }
+    
         T value = this.last.getValue();
         this.last = this.last.getPrevious();
-        this.last.setNext(null);
+    
+        if (this.last != null) { 
+            this.last.setNext(null);
+        } else { 
+            this.first = new Node<T>(null);
+            this.last = this.first;
+        }
         return value;
     }
 
@@ -70,6 +82,6 @@ public class NodeStack<T> implements IStack<T> {
             default:
                 throw new IllegalArgumentException("Operador ingresado inválido: " + operator);
         }
-        return (T) Integer.valueOf(result);
+        return (T) String.valueOf(result);
     }
 }

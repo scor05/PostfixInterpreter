@@ -1,4 +1,5 @@
 package postfix.interpreter;
+
 /**
  * Clase nodo que representará cada una de las casillas de la pila.
  */

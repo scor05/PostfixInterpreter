@@ -2,31 +2,27 @@ package postfix.interpreter;
 public class NodeStack<T> implements IStack<T> {
     private Node<T> first;
     private Node<T> last;
+    private int size; // Contador de elementos en la pila
+
+    /**
+     * Constructor de la pila.
+     */
 
     public NodeStack() {
         this.first = new Node<T>(null);
         this.last = null;
+        this.size = 0;
     }
+        /**
+     * Retorna la cantidad de elementos en la pila.
+     */
 
-    public Node<T> getFirst() {
-        return this.first;
-    }
-
-    public void setFirst(Node<T> first) {
-        this.first = first;
-    }
-
-    public Node<T> getLast() {
-        return this.last;
-    }
-
-    public void setLast(Node<T> last) {
-        this.last = last;
+    public int size() {
+        return this.size;
     }
 
     public void push(T value) {
         Node<T> newNode = new Node<T>(value);
-
         if (this.last == null) {
             this.setFirst(newNode);
             this.setLast(newNode);
@@ -36,11 +32,12 @@ public class NodeStack<T> implements IStack<T> {
             newNode.setPrevious(aux);
             this.setLast(newNode);
         }
+        this.size++;
     }
 
     public T pop() {
         if (this.last == null) { 
-            throw new RuntimeException("La pila ya está vacía."); 
+            throw new RuntimeException("Error: La pila ya está vacía."); 
         }
     
         T value = this.last.getValue();
@@ -52,8 +49,20 @@ public class NodeStack<T> implements IStack<T> {
             this.first = new Node<T>(null);
             this.last = this.first;
         }
+        this.size--;
         return value;
     }
+
+        /**
+     * Realiza una operación matemática entre dos valores extraídos de la pila.
+     * 
+     * @param operator Operador aritmético a aplicar (+, -, *, /, %).
+     * @param t1 Primer operando.
+     * @param t2 Segundo operando.
+     * @return Resultado de la operación como tipo T.
+     * @throws ArithmeticException Si se intenta dividir o calcular el módulo entre cero.
+     * @throws IllegalArgumentException Si el operador no es válido.
+     */
 
     @SuppressWarnings("unchecked")
     public T operation(char operator, T t1, T t2){
@@ -72,15 +81,18 @@ public class NodeStack<T> implements IStack<T> {
                 break;
             case '/':
                 if (value2 == 0) {
-                    throw new ArithmeticException("División entre cero.");
+                    throw new ArithmeticException("Error: División entre cero.");
                 }
                 result = value1 / value2;
                 break;
             case '%':
+                if (value2 == 0) {
+                    throw new ArithmeticException("Error: Módulo entre cero.");
+                }
                 result = value1 % value2;
                 break;
             default:
-                throw new IllegalArgumentException("Operador ingresado inválido: " + operator);
+                throw new IllegalArgumentException("Error: Operador ingresado inválido -> " + operator);
         }
         return (T) String.valueOf(result);
     }
